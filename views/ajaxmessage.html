@@ -70,15 +70,17 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Check for error from the server
-                if (data.error) {
-                    errorMessageDiv.innerHTML = data.error;
-                    errorMessageDiv.style.display = 'block';
-                } else {
-                    document.getElementById('messages').innerHTML = '<div class="alert alert-success">Message sent successfully!</div>';
-                    document.getElementById('ajaxMessageForm').reset(); // Reset form fields
-                }
-            })
+    // Check for error from the server
+    if (data.error) {
+        errorMessageDiv.innerHTML = data.error;
+        errorMessageDiv.style.display = 'block';
+    } else {
+        document.getElementById('messages').innerHTML = '<div class="alert alert-success">Message sent successfully!</div>';
+        document.getElementById('ajaxMessageForm').reset(); // Reset form fields
+        window.location.href = '/guestbook.html'; // Redirect to guestbook.html
+    }
+})
+
             .catch(error => {
                 console.error('Error:', error);
                 errorMessageDiv.innerHTML = 'There was an error sending your message. Please try again.';
