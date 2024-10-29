@@ -8,6 +8,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
+// Temporary endpoint to list images
+app.get('/list-images', (req, res) => {
+    const imagesDir = path.join(__dirname, 'public', 'images');
+    fs.readdir(imagesDir, (err, files) => {
+        if (err) {
+            return res.status(500).send('Error reading images directory');
+        }
+        res.json(files); // Return the list of files as JSON
+    });
+});
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
@@ -67,10 +77,8 @@ app.post('/ajaxmessage', (req, res) => {
         res.json(messages); // Send the updated messages back to the client
       });
     });
-  });
+});
   
-  
-
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
