@@ -1,0 +1,14 @@
+body {
+    background-image: url('/images/travel-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+.navbar, .container {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+.container {
+    padding: 20px;
+    border-radius: 10px;
+}

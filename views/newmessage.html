@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave a Message</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="/styles.css" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">My Travel Guestbook</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/guestbook">Guestbook</a></li>
+                <li class="nav-item"><a class="nav-link" href="/newmessage">Leave a Message</a></li>
+                <li class="nav-item"><a class="nav-link" href="/ajaxmessage">AJAX Message</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container mt-5">
+        <h2>Leave a Message</h2>
+        
+        <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+
+        <form id="messageForm" action="/newmessage" method="POST">
+            <div class="form-group">
+                <label for="username">Name:</label>
+                <input type="text" id="username" name="username" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" class="form-control" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </main>
+
+    <script>
+        const form = document.getElementById('messageForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default browser validation
+            
+            // Clear previous error message
+            errorMessage.style.display = 'none';
+
+            const username = document.getElementById('username').value.trim();
+            const country = document.getElementById('country').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (!username || !country || !message) {
+                errorMessage.innerHTML = 'All fields are required!';
+                errorMessage.style.display = 'block';
+            } else {
+                form.submit(); // Only submit if validation is successful
+            }
+        });
+
+        // Clear error message when user starts typing
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('input', () => {
+                errorMessage.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

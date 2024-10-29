@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave a Message (AJAX)</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="/styles.css" rel="stylesheet"> <!-- Link to your custom CSS file -->
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">My Travel Guestbook</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/guestbook">Guestbook</a></li>
+                <li class="nav-item"><a class="nav-link" href="/newmessage">Leave a Message</a></li>
+                <li class="nav-item"><a class="nav-link" href="/ajaxmessage">AJAX Message</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container mt-5">
+        <h2>Leave a Message (AJAX)</h2>
+        
+        <!-- Error message div -->
+        <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+
+        <form id="ajaxMessageForm">
+            <div class="form-group">
+                <label for="username">Name:</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" class="form-control" rows="4" required></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="submitAjaxMessage()">Submit</button>
+        </form>
+
+        <!-- Area to display messages after successful submission -->
+        <div id="messages" class="mt-3"></div>
+    </main>
+
+    <script>
+        function submitAjaxMessage() {
+            const username = document.getElementById('username').value.trim();
+            const country = document.getElementById('country').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const errorMessageDiv = document.getElementById('errorMessage');
+
+            // Reset the error message display
+            errorMessageDiv.style.display = 'none';
+            errorMessageDiv.innerHTML = '';
+
+            if (!username || !country || !message) {
+                errorMessageDiv.innerHTML = 'All fields are required!';
+                errorMessageDiv.style.display = 'block';
+                return;
+            }
+
+            fetch('/ajaxmessage', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, country, message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Check for error from the server
+                if (data.error) {
+                    errorMessageDiv.innerHTML = data.error;
+                    errorMessageDiv.style.display = 'block';
+                } else {
+                    document.getElementById('messages').innerHTML = '<div class="alert alert-success">Message sent successfully!</div>';
+                    document.getElementById('ajaxMessageForm').reset(); // Reset form fields
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorMessageDiv.innerHTML = 'There was an error sending your message. Please try again.';
+                errorMessageDiv.style.display = 'block';
+            });
+        }
+    </script>
+</body>
+</html>

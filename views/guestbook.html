@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guestbook</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Travel Guestbook</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/guestbook">Guestbook</a></li>
+                <li class="nav-item"><a class="nav-link" href="/newmessage">Add Message</a></li>
+                <li class="nav-item"><a class="nav-link" href="/ajaxmessage">Add Ajax Message</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h2>Guestbook Messages</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Country</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="guestbook-messages"></tbody>
+        </table>
+    </div>
+    <script>
+        fetch('/guestbook-data')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById('guestbook-messages');
+            data.forEach(msg => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${msg.username}</td><td>${msg.country}</td><td>${msg.message}</td><td>${new Date(msg.date).toLocaleString()}</td>`;
+                tbody.appendChild(row);
+            });
+        });
+    </script>
+</body>
+</html>
