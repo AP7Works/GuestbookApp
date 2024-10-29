@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: guestbookapp
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    staticPublishPath: public
